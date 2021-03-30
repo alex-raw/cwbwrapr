@@ -1,0 +1,19 @@
+Package: cwbwrap
+Title: A Selection of Convenience Tools to Call CWB and CQP Commands from R
+Version: 0.0.0.9000
+Authors@R:
+    person(given = "Alexander",
+           family = "Rauhut",
+           role = c("aut", "cre"),
+           email = "alexraw@mailbox.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package is used to scan and query corpus data from an
+  existing CWB installation. Basically just system calls, no convoluted object classes or
+  additional syntax to mirror already existing CWB functionality.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports:
+  data.table
