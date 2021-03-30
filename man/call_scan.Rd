@@ -27,6 +27,7 @@ cwb-scan-corpus. \code{scan_import()} additionally imports the entire directory
 with fread as data.table using \code{fread()} and \code{rbindlist()}.
 }
 \examples{
+\dontrun{
 lol <- list(
   corpus = c("BASE", "BROWN", "FROWN"),
   p_attr = c("word", "lemma"),
@@ -36,4 +37,5 @@ lol <- list(
 full <- scan_import("data/", lol)
 full <- import_from_dir("data/", names(lol))
 call_scan("data/", lol)
+}
 }

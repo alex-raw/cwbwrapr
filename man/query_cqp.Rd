@@ -19,9 +19,11 @@ A convenience wrapper generating \code{system()} calls to cqp -c
 Requires a working installation of cwb
 }
 \examples{
+\dontrun{
 cqp_query <- '
 "example"
 '
 filename <- "lol"
 query_cqp(cqp_query, "BROWN", "lol_a_file.txt")
+}
 }

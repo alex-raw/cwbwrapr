@@ -9,11 +9,13 @@
 #' @param filename name of the file to save the results to
 
 #' @examples
+#'\dontrun{
 #' cqp_query <- '
 #' "example"
 #' '
 #' filename <- "lol"
 #' query_cqp(cqp_query, "BROWN", "lol_a_file.txt")
+#'}
 
 #' @export
 query_cqp <- function(query, corpus = NULL, filename) {

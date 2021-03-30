@@ -57,6 +57,7 @@ cwb_scan <- Vectorize(
 #' names of the list provided in parameters
 #'
 #' @examples
+#'\dontrun{
 #' lol <- list(
 #'   corpus = c("BASE", "BROWN", "FROWN"),
 #'   p_attr = c("word", "lemma"),
@@ -66,6 +67,7 @@ cwb_scan <- Vectorize(
 #' full <- scan_import("data/", lol)
 #' full <- import_from_dir("data/", names(lol))
 #' call_scan("data/", lol)
+#'}
 #' @export
 
 call_scan <- function(dir_path, parameters) invisible(
