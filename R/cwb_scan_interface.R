@@ -110,3 +110,5 @@ scan_import <- function(dir_path, parameters, col_names = names(parameters)) {
   import_from_dir(dir_path, col_names)
 }
 
+# due to NSE notes in R CMD check
+o11 <- f1 <- assoc <- e11 <- NULL
