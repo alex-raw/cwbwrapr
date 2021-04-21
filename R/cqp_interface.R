@@ -19,8 +19,7 @@
 
 #' @export
 query_cqp <- function(query, corpus = NULL, filename) {
-  system(paste0(
-    "echo '", corpus, "; ", query,
-    '; cat Last > "', filename, "\";' | cqp -c"
-  ))
+  system2("echo", paste0("'", corpus, "; ", query,
+    '; cat Last >"', filename, "\";' | cqp -c")
+  )
 }

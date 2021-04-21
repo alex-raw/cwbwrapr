@@ -39,9 +39,8 @@ cwb_scan <- Vectorize(
     # call cwb-scan-corpus and save result to file in directory
     if (!dir.exists(dir_path)) dir.create(dir_path)
     filename <- paste0(dir_path, corpus, ".", p_attr, ".", s_attr)
-    system(paste(
-      "cwb-scan-corpus -o", filename, corpus, p_attr, s_attr, constraint)
-    )
+    system2("cwb-scan-corpus",
+            c("-o", filename, corpus, p_attr, s_attr, constraint))
 }, vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"))
 
 #' CWB-Scan interface for R
