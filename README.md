@@ -4,8 +4,8 @@
 
 ## cwbwrapr
 
-Some convenience wrapper to integrate CWB and CQP calls into R.
-No integrated installation, no fancy object classes.
+Some convenience wrappers to integrate CWB and CQP calls into R.
+No integrated installation.
 
 See: http://cwb.sourceforge.net/
 
