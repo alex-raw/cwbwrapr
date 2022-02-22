@@ -1,8 +1,8 @@
 #' Create a data grid
 #'
 #' Create a grid with combinations of parameters to scan. This
-#' includes a look-up table to replace alternative attribute names. Depends on
-#' installation
+#' includes a currently hardcoded look-up table to replace alternative attribute names.
+#' Depends on installation
 #'
 #' @param parameters Named list of parameters for "corpus", "s_attr", "p_attr"
 #' @import data.table
@@ -23,7 +23,7 @@ get_data_grid <- function(parameters) {
 
 #' Call cwb-scan-corpus with vectors of parameters
 #'
-#' This calls cwb-scan-corpus from parameters provided by vectors and all their
+#' This calls cwb-scan-corpus with parameters provided by vectors for all their
 #' combinations. Currently one p_attribute and one s_attribute are hardcoded.
 #'
 #' @param dir_path Name of the directory to save files in
@@ -33,7 +33,7 @@ get_data_grid <- function(parameters) {
 #' @param constraint additional character string with constraints, see `man cwb-scan-corpus`
 #' @export
 
-cwb_scan <- Vectorize(
+cwb_scan <- Vectorize(vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"),
   function(dir_path, corpus, p_attr, s_attr, constraint = NULL) {
     # TODO: test constraint
     # call cwb-scan-corpus and save result to file in directory
@@ -41,7 +41,8 @@ cwb_scan <- Vectorize(
     filename <- paste0(dir_path, corpus, ".", p_attr, ".", s_attr)
     system2("cwb-scan-corpus",
             c("-o", filename, corpus, p_attr, s_attr, constraint))
-}, vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"))
+  }
+)
 
 #' CWB-Scan interface for R
 #'
@@ -56,17 +57,17 @@ cwb_scan <- Vectorize(
 #' names of the list provided in parameters
 #'
 #' @examples
-#'\dontrun{
-#' lol <- list(
-#'   corpus = c("BASE", "BROWN", "FROWN"),
-#'   p_attr = c("word", "lemma"),
-#'   s_attr = c("text_id")
-#' )
+#' \dontrun{
+#'  params <- list(
+#'    corpus = c("BASE", "BROWN", "FROWN"),
+#'    p_attr = c("word", "lemma"),
+#'    s_attr = c("text_id")
+#'  )
 #'
-#' full <- scan_import("data/", lol)
-#' full <- import_from_dir("data/", names(lol))
-#' call_scan("data/", lol)
-#'}
+#'  full <- scan_import("data/", params)
+#'  full <- import_from_dir("data/", names(params))
+#'  call_scan("data/", params)
+#' }
 #' @export
 
 call_scan <- function(dir_path, parameters) invisible(
@@ -110,4 +111,4 @@ scan_import <- function(dir_path, parameters, col_names = names(parameters)) {
 }
 
 # due to NSE notes in R CMD check
-o11 <- f1 <- assoc <- e11 <- NULL
+corpus <- s_attr <- p_attr <- NULL

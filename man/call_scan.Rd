@@ -28,14 +28,14 @@ with fread as data.table using \code{fread()} and \code{rbindlist()}.
 }
 \examples{
 \dontrun{
-lol <- list(
-  corpus = c("BASE", "BROWN", "FROWN"),
-  p_attr = c("word", "lemma"),
-  s_attr = c("text_id")
-)
+ params <- list(
+   corpus = c("BASE", "BROWN", "FROWN"),
+   p_attr = c("word", "lemma"),
+   s_attr = c("text_id")
+ )
 
-full <- scan_import("data/", lol)
-full <- import_from_dir("data/", names(lol))
-call_scan("data/", lol)
+ full <- scan_import("data/", params)
+ full <- import_from_dir("data/", names(params))
+ call_scan("data/", params)
 }
 }

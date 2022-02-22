@@ -18,6 +18,6 @@ cwb_scan(dir_path, corpus, p_attr, s_attr, constraint = NULL)
 \item{constraint}{additional character string with constraints, see \verb{man cwb-scan-corpus}}
 }
 \description{
-This calls cwb-scan-corpus from parameters provided by vectors and all their
+This calls cwb-scan-corpus with parameters provided by vectors for all their
 combinations. Currently one p_attribute and one s_attribute are hardcoded.
 }

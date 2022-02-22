@@ -11,6 +11,6 @@ get_data_grid(parameters)
 }
 \description{
 Create a grid with combinations of parameters to scan. This
-includes a look-up table to replace alternative attribute names. Depends on
-installation
+includes a currently hardcoded look-up table to replace alternative attribute names.
+Depends on installation
 }

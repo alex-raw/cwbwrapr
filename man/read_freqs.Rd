@@ -11,6 +11,7 @@ read_freqs(
   n = sh_count_lines(path),
   comment.char = "",
   verbose = FALSE,
+  fread = FALSE,
   ...
 )
 }
@@ -29,6 +30,8 @@ strings with types}
 \item{comment.char}{character. off by default. replace if necessary}
 
 \item{verbose}{boolean. If TRUE, number of records is printed after import}
+
+\item{fread}{boolean. Use data.table::fread}
 
 \item{...}{further arguments to be passed to \code{scan}}
 }

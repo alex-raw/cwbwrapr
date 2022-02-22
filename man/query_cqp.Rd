@@ -4,15 +4,17 @@
 \alias{query_cqp}
 \title{Query CQP from R}
 \usage{
-query_cqp(query, corpus = NULL, filename)
+query_cqp(query, corpus = NULL, n = 5, path = NULL)
 }
 \arguments{
 \item{query}{character string with the cqp commands to be used
 if multiple commands are stringed together, \verb{;} has to be used as separator}
 
-\item{corpus}{character string; optionally provide corpus to be activated}
+\item{corpus}{character optionally provide corpus to be used}
 
-\item{filename}{name of the file to save the results to}
+\item{n}{integer left and right context}
+
+\item{path}{name of the file to save the results to}
 }
 \description{
 A convenience wrapper generating \code{system()} calls to cqp -c
@@ -20,10 +22,7 @@ Requires a working installation of cwb
 }
 \examples{
 \dontrun{
-cqp_query <- '
-"example"
-'
-filename <- "lol"
-query_cqp(cqp_query, "BROWN", "lol_a_file.txt")
+cqp_query <- '"example"'
+query_cqp(cqp_query, "BROWN")
 }
 }
