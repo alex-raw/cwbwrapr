@@ -10,11 +10,11 @@
 #' @param path name of the file to save the results to
 
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' cqp_query <- '"example"'
 #' query_cqp(cqp_query, "BROWN")
-#'}
-
+#' }
+#'
 #' @export
 query_cqp <- function(query, corpus = NULL, n = 5, path = NULL) {
   if (!is.null(corpus)) query <- paste(corpus, query, sep = ";")

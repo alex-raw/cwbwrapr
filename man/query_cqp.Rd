@@ -25,4 +25,5 @@ Requires a working installation of cwb
 cqp_query <- '"example"'
 query_cqp(cqp_query, "BROWN")
 }
+
 }

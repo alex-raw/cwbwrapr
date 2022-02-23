@@ -12,12 +12,12 @@ get_data_grid <- function(parameters) {
   # create parameter combinations from list
   data.table::data.table(
     expand.grid(parameters, stringsAsFactors = FALSE)
-    )[
+  )[
     corpus %in% c("DTA", "DTA2017", "BASE") &
-    s_attr == "text_id", s_attr := "file_id"
-    ][
+      s_attr == "text_id", s_attr := "file_id"
+  ][
     corpus %in% c("BNC", "BNC-BABY") &
-    p_attr == "lemma", p_attr := "hw"
+      p_attr == "lemma", p_attr := "hw"
   ][]
 }
 
@@ -33,14 +33,17 @@ get_data_grid <- function(parameters) {
 #' @param constraint additional character string with constraints, see `man cwb-scan-corpus`
 #' @export
 
-cwb_scan <- Vectorize(vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"),
+# call cwb-scan-corpus and save result to file in directory
+cwb_scan <- Vectorize(
+  vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"),
   function(dir_path, corpus, p_attr, s_attr, constraint = NULL) {
     # TODO: test constraint
-    # call cwb-scan-corpus and save result to file in directory
     if (!dir.exists(dir_path)) dir.create(dir_path)
     filename <- paste0(dir_path, corpus, ".", p_attr, ".", s_attr)
-    system2("cwb-scan-corpus",
-            c("-o", filename, corpus, p_attr, s_attr, constraint))
+    system2(
+      "cwb-scan-corpus",
+      c("-o", filename, corpus, p_attr, s_attr, constraint)
+    )
   }
 )
 
@@ -58,34 +61,40 @@ cwb_scan <- Vectorize(vectorize.args = c("corpus", "p_attr", "s_attr", "constrai
 #'
 #' @examples
 #' \dontrun{
-#'  params <- list(
-#'    corpus = c("BASE", "BROWN", "FROWN"),
-#'    p_attr = c("word", "lemma"),
-#'    s_attr = c("text_id")
-#'  )
+#' params <- list(
+#'   corpus = c("BASE", "BROWN", "FROWN"),
+#'   p_attr = c("word", "lemma"),
+#'   s_attr = c("text_id")
+#' )
 #'
-#'  full <- scan_import("data/", params)
-#'  full <- import_from_dir("data/", names(params))
-#'  call_scan("data/", params)
+#' full <- scan_import("data/", params)
+#' full <- import_from_dir("data/", names(params))
+#' call_scan("data/", params)
 #' }
 #' @export
 
-call_scan <- function(dir_path, parameters) invisible(
-  with(get_data_grid(parameters), cwb_scan(dir_path, corpus, p_attr, s_attr))
-)
+call_scan <- function(dir_path, parameters) {
+  invisible(
+    with(get_data_grid(parameters), cwb_scan(dir_path, corpus, p_attr, s_attr))
+  )
+}
 
 #' @rdname call_scan
 #' @export
 
+# import scanned files; create columns with corpus and attributes
 import_from_dir <- function(dir_path, col_names) {
-  # import scanned files; create columns with corpus and attributes
   files <- dir(dir_path, full.names = TRUE)
-  data.table::rbindlist(idcol = "corpus",
+  data.table::rbindlist(
+    idcol = "corpus",
     sapply(files, freq_list_to_dt, simplify = FALSE)
-  )[, (col_names) := lapply(FUN = as.factor,
-        data.table::tstrsplit(split = ".", fixed = TRUE,
-        gsub(paste0(dir_path, "/"), "", corpus)
-  ))]
+  )[, (col_names) := lapply(
+    FUN = as.factor,
+    data.table::tstrsplit(
+      split = ".", fixed = TRUE,
+      gsub(paste0(dir_path, "/"), "", corpus)
+    )
+  )]
 }
 
 freq_list_to_dt <- function(dir_path) {
@@ -104,8 +113,8 @@ freq_list_to_dt <- function(dir_path) {
 #' @rdname call_scan
 #' @export
 
+# scan and create file; read them into data.table
 scan_import <- function(dir_path, parameters, col_names = names(parameters)) {
-  # scan and create file; read them into data.table
   call_scan(dir_path, parameters)
   import_from_dir(dir_path, col_names)
 }
