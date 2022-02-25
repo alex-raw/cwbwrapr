@@ -13,7 +13,12 @@
 #' @param n number of lines in file, see `nlines` in `scan()`
 #' @param comment.char character. off by default. replace if necessary
 #' @param quiet boolean. If TRUE, number of records is printed after import
-#' @param ... further arguments to be passed to `scan`
+#' @param ... further arguments to be passed to `scan` or `fread`
+#' @param header see `scan` or `fread`
+#' @param sep see `scan` or `fread`
+#' @param quote see `scan` or `fread`
+#' @param na.strings see `scan` or `fread`
+#' @param stringsAsFactors see `scan` or `fread`
 #'
 #' @return If df == TRUE, a `data.frame`, else a `list`
 #'
@@ -53,6 +58,7 @@ sh_count_lines <- function(path) {
   )
 }
 
+#' @rdname read_freqs
 #' @export
 # TODO: write wrapper to cover this and read_freqs or merge using argument
 fread_freqs <- function(..., header = FALSE, sep = "\t", quote = "",

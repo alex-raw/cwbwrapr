@@ -2,6 +2,7 @@
 % Please edit documentation in R/tools.R
 \name{read_freqs}
 \alias{read_freqs}
+\alias{fread_freqs}
 \title{Import plain text frequency lists}
 \usage{
 read_freqs(
@@ -10,9 +11,17 @@ read_freqs(
   df = TRUE,
   n = sh_count_lines(path),
   comment.char = "",
-  verbose = FALSE,
-  fread = FALSE,
+  quiet = TRUE,
   ...
+)
+
+fread_freqs(
+  ...,
+  header = FALSE,
+  sep = "\\t",
+  quote = "",
+  na.strings = NULL,
+  stringsAsFactors = FALSE
 )
 }
 \arguments{
@@ -29,11 +38,19 @@ strings with types}
 
 \item{comment.char}{character. off by default. replace if necessary}
 
-\item{verbose}{boolean. If TRUE, number of records is printed after import}
+\item{quiet}{boolean. If TRUE, number of records is printed after import}
 
-\item{fread}{boolean. Use data.table::fread}
+\item{...}{further arguments to be passed to \code{scan} or \code{fread}}
 
-\item{...}{further arguments to be passed to \code{scan}}
+\item{header}{see \code{scan} or \code{fread}}
+
+\item{sep}{see \code{scan} or \code{fread}}
+
+\item{quote}{see \code{scan} or \code{fread}}
+
+\item{na.strings}{see \code{scan} or \code{fread}}
+
+\item{stringsAsFactors}{see \code{scan} or \code{fread}}
 }
 \value{
 If df == TRUE, a \code{data.frame}, else a \code{list}

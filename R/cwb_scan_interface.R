@@ -36,9 +36,12 @@ get_data_grid <- function(parameters) {
 # call cwb-scan-corpus and save result to file in directory
 cwb_scan <- Vectorize(
   vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"),
-  function(dir_path, corpus, p_attr, s_attr, constraint = NULL) {
+  function(corpus, p_attr, s_attr, dir_path = tempdir(), constraint = NULL) {
+    stopifnot(in_cwb_registry(corpus))
+    dir.create(dir_path)
+
     # TODO: test constraint
-    if (!dir.exists(dir_path)) dir.create(dir_path)
+
     filename <- paste0(dir_path, corpus, ".", p_attr, ".", s_attr)
     system2(
       "cwb-scan-corpus",
