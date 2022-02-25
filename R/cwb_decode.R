@@ -19,6 +19,11 @@ cwb_decode <- function(corpus, p_attrs, s_attrs) {
     stop(corpus, " not in CWB registry")
   }
 
+  if (length(s_attrs) > 1) stop("multiple s_attrs currently not supported")
+  # TODO: multiple s_attrs don't work due to identical regions in -S attributes
+  # tabulating multiple s_attrs would require parsing xml output due to
+  # limitations of cwb-decode
+
   paste(
     "cwb-decode", corpus,
     paste(" -S", s_attrs, collapse = ""),
