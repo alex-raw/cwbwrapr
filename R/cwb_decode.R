@@ -15,7 +15,9 @@
 #'
 #' @export
 cwb_decode <- function(corpus, p_attrs, s_attrs) {
-  if (system2("cwb-lexdecode", c("-S", corpus), stdout = "/dev/null")) {
+  if (system2("cwb-describe-corpus", corpus,
+    stdout = "/dev/null", stderr = "/dev/null"
+  )) {
     stop(corpus, " not in CWB registry")
   }
 
