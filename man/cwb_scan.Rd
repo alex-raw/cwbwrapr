@@ -4,16 +4,16 @@
 \alias{cwb_scan}
 \title{Call cwb-scan-corpus with vectors of parameters}
 \usage{
-cwb_scan(dir_path, corpus, p_attr, s_attr, constraint = NULL)
+cwb_scan(corpus, p_attr, s_attr, dir_path = tempdir(), constraint = NULL)
 }
 \arguments{
-\item{dir_path}{Name of the directory to save files in}
-
 \item{corpus}{Name of the encoded cwb corpus.}
 
 \item{p_attr}{positional attribute to scan}
 
 \item{s_attr}{structural attribute to scan}
+
+\item{dir_path}{Name of the directory to save files in}
 
 \item{constraint}{additional character string with constraints, see \verb{man cwb-scan-corpus}}
 }

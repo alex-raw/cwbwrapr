@@ -4,8 +4,8 @@
 #' Requires a working installation of cwb
 #'
 #' @param corpus character name of the corpus in the cwb registry
-#' @param p_attrs character vector with p-attributes
-#' @param s_attrs character vector with s-attributes
+#' @param p_attrs character vector with p-attributes, defaults to "word"
+#' @param s_attrs character vector with s-attributes, defaults to "text_id"
 #'
 #' @examples
 #' \dontrun{
@@ -14,17 +14,15 @@
 #' }
 #'
 #' @export
-cwb_decode <- function(corpus, p_attrs, s_attrs) {
-  if (system2("cwb-describe-corpus", corpus,
-    stdout = "/dev/null", stderr = "/dev/null"
-  )) {
-    stop(corpus, " not in CWB registry")
-  }
+cwb_decode <- function(corpus, p_attrs = "word", s_attrs = "text_id") {
+  stopifnot(in_cwb_registry(corpus))
 
-  if (length(s_attrs) > 1) stop("multiple s_attrs currently not supported")
-  # TODO: multiple s_attrs don't work due to identical regions in -S attributes
-  # tabulating multiple s_attrs would require parsing xml output due to
-  # limitations of cwb-decode
+  if (length(s_attrs) > 1) {
+    stop("multiple s_attrs currently not supported")
+    # TODO: multiple s_attrs don't work due to identical regions in -S
+    # attributes tabulating multiple s_attrs would require parsing xml output
+    # due to limitations of cwb-decode
+  }
 
   paste(
     "cwb-decode", corpus,

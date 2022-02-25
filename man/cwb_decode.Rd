@@ -4,14 +4,14 @@
 \alias{cwb_decode}
 \title{Decode entire corpus}
 \usage{
-cwb_decode(corpus, p_attrs, s_attrs)
+cwb_decode(corpus, p_attrs = "word", s_attrs = "text_id")
 }
 \arguments{
 \item{corpus}{character name of the corpus in the cwb registry}
 
-\item{p_attrs}{character vector with p-attributes}
+\item{p_attrs}{character vector with p-attributes, defaults to "word"}
 
-\item{s_attrs}{character vector with s-attributes}
+\item{s_attrs}{character vector with s-attributes, defaults to "text_id"}
 }
 \description{
 A convenience wrapper generating \code{system()} calls to cwb-decode
