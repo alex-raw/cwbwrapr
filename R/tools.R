@@ -1,15 +1,3 @@
-read_freqs_dt <- function(path, header = FALSE, ...) {
-  data.table::fread(
-    path,
-    header = header,
-    sep = "\t",
-    quote = "",
-    na.strings = NULL,
-    stringsAsFactors = FALSE,
-    ...
-  )
-}
-
 #' Import plain text frequency lists
 #'
 #' @description Convenience wrapper to import typical output from CWB tools.
@@ -24,8 +12,7 @@ read_freqs_dt <- function(path, header = FALSE, ...) {
 #' @param df boolean. If TRUE (default) a `data.frame` is returned.
 #' @param n number of lines in file, see `nlines` in `scan()`
 #' @param comment.char character. off by default. replace if necessary
-#' @param verbose boolean. If TRUE, number of records is printed after import
-#' @param fread boolean. Use data.table::fread
+#' @param quiet boolean. If TRUE, number of records is printed after import
 #' @param ... further arguments to be passed to `scan`
 #'
 #' @return If df == TRUE, a `data.frame`, else a `list`
@@ -43,34 +30,42 @@ read_freqs_dt <- function(path, header = FALSE, ...) {
 #' out <- read_freqs(path, list(f = 0L, type = "", text_id = ""))
 #' }
 #' @export
-read_freqs <- function(
-  path,
-  cols = list(f = 0L, type = ""),
-  df = TRUE,
-  n = sh_count_lines(path),
-  comment.char = "",
-  verbose = FALSE,
-  fread = FALSE,
-  ...
-) {
-  if (isTRUE(fread)) out <- read_freqs_dt(path, ...)
+read_freqs <- function(path, cols = list(f = 0L, type = ""), df = TRUE,
+                       n = sh_count_lines(path), comment.char = "",
+                       quiet = TRUE, ...) {
   out <- scan(
-      path,
-      what = cols,
-      nlines = n,
-      sep = "\t",
-      quote = "",
-      na.strings = "",
-      allowEscapes = FALSE,
-      quiet = !verbose,
-      ...
+    path,
+    what = cols,
+    nlines = n,
+    sep = "\t",
+    quote = "",
+    na.strings = "",
+    allowEscapes = FALSE,
+    quiet = quiet,
+    ...
   )
   if (df) data.frame(out) else out
 }
 
-sh_count_lines <- function(path) as.integer(
-  system2("wc", c("-l", path, " | awk '{print $1}'"), stdout = TRUE)
-)
+sh_count_lines <- function(path) {
+  as.integer(
+    system2("wc", c("-l", path, " | awk '{print $1}'"), stdout = TRUE)
+  )
+}
+
+#' @export
+# TODO: write wrapper to cover this and read_freqs or merge using argument
+fread_freqs <- function(..., header = FALSE, sep = "\t", quote = "",
+                        na.strings = NULL, stringsAsFactors = FALSE) {
+  data.table::fread(
+    ...,
+    header = header,
+    sep = sep,
+    quote = quote,
+    na.strings = na.strings,
+    stringsAsFactors = stringsAsFactors
+  )
+}
 
 # read.table.cwb <- function(path, n, header = FALSE, comment.char = "", ...) {
 #   if (missing(n)) stop("Need to specify number of columns to read")

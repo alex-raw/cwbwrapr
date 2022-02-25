@@ -3,6 +3,7 @@
 export(call_scan)
 export(cwb_decode)
 export(cwb_scan)
+export(fread_freqs)
 export(get_data_grid)
 export(import_from_dir)
 export(query_cqp)
