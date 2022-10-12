@@ -20,8 +20,8 @@ query_cqp <- function(query, corpus = NULL, n = 5, path = NULL) {
   if (!is.null(corpus)) query <- paste(corpus, query, sep = ";")
   if (is.null(path)) path <- tempfile()
   cmd <- sprintf(
-    "'%s; tabulate Last match[-%d]..match[%d] word > \"%s\";' | cqp -c",
-    query, n, n, path
+    "'%s; %s; tabulate Last match[-%d]..match[%d] word > \"%s\";' | cqp -c",
+    corpus, query, n, n, path
   )
   system2("echo", cmd)
   readLines(path)

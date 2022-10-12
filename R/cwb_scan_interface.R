@@ -4,21 +4,30 @@
 #' includes a currently hardcoded look-up table to replace alternative attribute names.
 #' Depends on installation
 #'
-#' @param parameters Named list of parameters for "corpus", "s_attr", "p_attr"
+#' @param corpus character vector of corpus names in CWB registry
+#' @param p_attr character vector of s-attributes
+#' @param s_attr character vector of p-attributes
 #' @import data.table
 #' @export
+parameter_grid <- function(corpus, ...) {
+  if (!length(list(...))) {
+    stop("at least one argument has to be specified")
+  }
 
-get_data_grid <- function(parameters) {
-  # create parameter combinations from list
-  data.table::data.table(
-    expand.grid(parameters, stringsAsFactors = FALSE)
-  )[
-    corpus %in% c("DTA", "DTA2017", "BASE") &
-      s_attr == "text_id", s_attr := "file_id"
-  ][
-    corpus %in% c("BNC", "BNC-BABY") &
-      p_attr == "lemma", p_attr := "hw"
-  ][]
+  out <- list(corpus = corpus, ...) |>
+    expand.grid(stringsAsFactors = FALSE) |>
+    data.table::data.table()
+
+  if ("s_attr" %in% ...names()) {
+    text2file <- c("DTA", "DTA2017", "BASE")
+    out[corpus %in% text2file & s_attr == "text_id", s_attr := "file_id"]
+  }
+
+  if ("p_attr" %in% ...names()) {
+    out[startsWith(corpus, "BNC") & p_attr == "lemma", p_attr := "hw"]
+  }
+
+  out[]
 }
 
 #' Call cwb-scan-corpus with vectors of parameters
@@ -31,24 +40,18 @@ get_data_grid <- function(parameters) {
 #' @param p_attr positional attribute to scan
 #' @param s_attr structural attribute to scan
 #' @param constraint additional character string with constraints, see `man cwb-scan-corpus`
+#'
+#' @return character dir_path if specified, else path to temporary directory
 #' @export
+cwb_scan <- function(..., dir_path = tempdir(), constraint = NULL) {
+  stopifnot(in_cwb_registry(list(...)["corpus"]))
 
-# call cwb-scan-corpus and save result to file in directory
-cwb_scan <- Vectorize(
-  vectorize.args = c("corpus", "p_attr", "s_attr", "constraint"),
-  function(corpus, p_attr, s_attr, dir_path = tempdir(), constraint = NULL) {
-    stopifnot(in_cwb_registry(corpus))
-    dir.create(dir_path)
+  # TODO: test constraint
 
-    # TODO: test constraint
-
-    filename <- paste0(dir_path, corpus, ".", p_attr, ".", s_attr)
-    system2(
-      "cwb-scan-corpus",
-      c("-o", filename, corpus, p_attr, s_attr, constraint)
-    )
-  }
-)
+  filename <- paste0(dir_path, "/", paste(list(...), collapse = "."))
+  system2("cwb-scan-corpus", c("-o", filename, ..., constraint))
+  filename
+}
 
 #' CWB-Scan interface for R
 #'
@@ -75,29 +78,24 @@ cwb_scan <- Vectorize(
 #' call_scan("data/", params)
 #' }
 #' @export
-
-call_scan <- function(dir_path, parameters) {
-  invisible(
-    with(get_data_grid(parameters), cwb_scan(dir_path, corpus, p_attr, s_attr))
-  )
+call_scan <- function(dir_path = tempdir(), ...) {
+  with(parameter_grid(...), Vectorize(cwb_scan)(corpus, p_attr, s_attr, dir_path))
+  dir_path
 }
 
 #' @rdname call_scan
 #' @export
-
 # import scanned files; create columns with corpus and attributes
 import_from_dir <- function(dir_path, col_names) {
   files <- dir(dir_path, full.names = TRUE)
+
   data.table::rbindlist(
     idcol = "corpus",
     sapply(files, freq_list_to_dt, simplify = FALSE)
-  )[, (col_names) := lapply(
-    FUN = as.factor,
-    data.table::tstrsplit(
-      split = ".", fixed = TRUE,
-      gsub(paste0(dir_path, "/"), "", corpus)
-    )
-  )]
+  )[, (col_names) := paste0(dir_path, "/") |>
+    gsub("", corpus) |>
+    data.table::tstrsplit(".", fixed = TRUE) |>
+    lapply(as.factor)]
 }
 
 freq_list_to_dt <- function(dir_path) {
@@ -115,10 +113,10 @@ freq_list_to_dt <- function(dir_path) {
 
 #' @rdname call_scan
 #' @export
-
 # scan and create file; read them into data.table
 scan_import <- function(dir_path, parameters, col_names = names(parameters)) {
-  call_scan(dir_path, parameters)
+  # call_scan(dir_path, parameters)
+  cwb_scan(dir_path, parameters)
   import_from_dir(dir_path, col_names)
 }
 

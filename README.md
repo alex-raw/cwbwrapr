@@ -1,5 +1,6 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/alex-raw/cwbwrapr/workflows/R-CMD-check/badge.svg)](https://github.com/alex-raw/cwbwrapr/actions)
+![GitHub License](https://img.shields.io/github/license/alex-raw/cwbwrapr)
 <!-- badges: end -->
 
 ## cwbwrapr
@@ -12,6 +13,6 @@ See: http://cwb.sourceforge.net/
 ## Install
 
 ```
-install.packages("devtools")
-devtools::install_github("alex-raw/cwbwrapr")
+install.packages("remotes")
+remotes::install_github("alex-raw/cwbwrapr")
 ```

@@ -6,7 +6,7 @@
 \alias{scan_import}
 \title{CWB-Scan interface for R}
 \usage{
-call_scan(dir_path, parameters)
+call_scan(dir_path = tempdir(), parameters)
 
 import_from_dir(dir_path, col_names)
 
