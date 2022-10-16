@@ -4,10 +4,14 @@
 \alias{parameter_grid}
 \title{Create a data grid}
 \usage{
-parameter_grid(parameters)
+parameter_grid(corpus, ...)
 }
 \arguments{
-\item{parameters}{Named list of parameters for "corpus", "s_attr", "p_attr"}
+\item{corpus}{character vector of corpus names in CWB registry}
+
+\item{p_attr}{character vector of s-attributes}
+
+\item{s_attr}{character vector of p-attributes}
 }
 \description{
 Create a grid with combinations of parameters to scan. This

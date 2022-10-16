@@ -6,12 +6,15 @@
 \title{Import plain text frequency lists}
 \usage{
 read_freqs(
-  path,
-  cols = list(f = 0L, type = ""),
-  df = TRUE,
-  n = sh_count_lines(path),
+  file,
+  header = FALSE,
+  cols = list(0L, ""),
+  sep = "\\t",
   comment.char = "",
-  quiet = TRUE,
+  na.strings = "",
+  quote = "",
+  allowEscapes = FALSE,
+  nlines = sh_count_lines(file),
   ...
 )
 
@@ -25,35 +28,30 @@ fread_freqs(
 )
 }
 \arguments{
-\item{path}{character. path to file}
+\item{header}{logical. whether or not the first line should be used as column
+names. Note: \code{names} in cols take precedence.}
 
 \item{cols}{list. a list with column types (e.g. \code{0}, for numeric,
 \code{""} for character), if named, the names will be used as column/vector names.
 By default, column 1 is expected to contain integer frequencies and column 2
 strings with types}
 
-\item{df}{boolean. If TRUE (default) a \code{data.frame} is returned.}
+\item{sep}{character.}
 
-\item{n}{number of lines in file, see \code{nlines} in \code{scan()}}
+\item{comment.char}{character.}
 
-\item{comment.char}{character. off by default. replace if necessary}
+\item{na.strings}{character.}
 
-\item{quiet}{boolean. If TRUE, number of records is printed after import}
+\item{quote}{character.}
 
-\item{...}{further arguments to be passed to \code{scan} or \code{fread}}
+\item{nlines}{integer. number of lines in file, see \code{nlines} in \code{scan()}}
 
-\item{header}{see \code{scan} or \code{fread}}
+\item{...}{further arguments to be passed to \code{scan}}
 
-\item{sep}{see \code{scan} or \code{fread}}
-
-\item{quote}{see \code{scan} or \code{fread}}
-
-\item{na.strings}{see \code{scan} or \code{fread}}
-
-\item{stringsAsFactors}{see \code{scan} or \code{fread}}
+\item{.x}{character. path to file or connection, see \code{scan()}}
 }
 \value{
-If df == TRUE, a \code{data.frame}, else a \code{list}
+data.frame or data.table
 }
 \description{
 Convenience wrapper to import typical output from CWB tools.
@@ -61,10 +59,9 @@ The expected file format is tab delimited, only containing data, no quotes,
 missing values, comments or header.
 }
 \details{
-This is just a wrapper around \code{scan} that behaves similarly to
-\code{read.table}.
-The main difference is that \code{wc -l} is run on the file before
-in order to get the number of lines to pass to \code{scan}.
+These are convenience wrappers around \code{scan} or \code{fread} with sane
+defaults for common frequency list formats.
+In \code{read_freqs}, \code{wc -l} is run if available to pass the line number to scan
 This reduces memory overhead substantially and can also be a bit faster.
 }
 \examples{
@@ -74,5 +71,5 @@ out <- read_freqs(path, list(f = 0L, type = "", text_id = ""))
 }
 }
 \seealso{
-\code{\link[=scan]{scan()}}
+\code{\link[=scan(), fread]{scan(), fread()}}
 }

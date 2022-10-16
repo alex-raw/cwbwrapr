@@ -6,7 +6,7 @@
 \alias{scan_import}
 \title{CWB-Scan interface for R}
 \usage{
-call_scan(dir_path = tempdir(), parameters)
+call_scan(dir_path = tempdir(), ...)
 
 import_from_dir(dir_path, col_names)
 
@@ -15,11 +15,11 @@ scan_import(dir_path, parameters, col_names = names(parameters))
 \arguments{
 \item{dir_path}{Name of directory to save results in}
 
-\item{parameters}{list of character vectors with corpora, p_attributes and
-s_attributes}
-
 \item{col_names}{column names for the parameters. by default read from the
 names of the list provided in parameters}
+
+\item{parameters}{list of character vectors with corpora, p_attributes and
+s_attributes}
 }
 \description{
 A convenience wrapper for scripting with cwb-scan. Creates data with
