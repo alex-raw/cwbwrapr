@@ -14,3 +14,11 @@ has_cwb_attr <- function(corpus, attribute) {
   # might want to distinction between s-ATT and p-ATT
   any(grepl(paste("ATT", attribute), stats))
 }
+
+sh_count_lines <- function(path) {
+  stopifnot(is.character(path))
+  .args <- c("-l", path, " | awk '{print $1}'")
+  system2("wc", .args, stdout = TRUE, stderr = NULL) |>
+    tryCatch(warning = \(w) 0L) |>
+    as.integer()
+}

@@ -15,6 +15,6 @@ parameter_grid(corpus, ...)
 }
 \description{
 Create a grid with combinations of parameters to scan. This
-includes a currently hardcoded look-up table to replace alternative attribute names.
+includes a currently hard-coded look-up table to replace alternative attribute names.
 Depends on installation
 }

@@ -22,5 +22,5 @@ character dir_path if specified, else path to temporary directory
 }
 \description{
 This calls cwb-scan-corpus with parameters provided by vectors for all their
-combinations. Currently one p_attribute and one s_attribute are hardcoded.
+combinations. Currently one p_attribute and one s_attribute are hard-coded.
 }

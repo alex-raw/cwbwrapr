@@ -1,7 +1,7 @@
 #' Create a data grid
 #'
 #' Create a grid with combinations of parameters to scan. This
-#' includes a currently hardcoded look-up table to replace alternative attribute names.
+#' includes a currently hard-coded look-up table to replace alternative attribute names.
 #' Depends on installation
 #'
 #' @param corpus character vector of corpus names in CWB registry
@@ -33,7 +33,7 @@ parameter_grid <- function(corpus, ...) {
 #' Call cwb-scan-corpus with vectors of parameters
 #'
 #' This calls cwb-scan-corpus with parameters provided by vectors for all their
-#' combinations. Currently one p_attribute and one s_attribute are hardcoded.
+#' combinations. Currently one p_attribute and one s_attribute are hard-coded.
 #'
 #' @param dir_path Name of the directory to save files in
 #' @param corpus Name of the encoded cwb corpus.

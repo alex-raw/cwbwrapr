@@ -1,4 +1,4 @@
-#' Import plain text frequency lists
+#' Read and write plain text frequency lists
 #'
 #' @description Convenience wrapper to import typical output from CWB tools.
 #' The expected file format is tab delimited, only containing data, no quotes,
@@ -16,6 +16,7 @@
 #' @param quote character.
 #' @param na.strings character.
 #' @param nlines integer. number of lines in file, see `nlines` in `scan()`
+#' @param skip integer. how many lines to skip, see `scan()`
 #' @param ... further arguments to be passed to `scan`
 #'
 #' @return data.frame or data.table
@@ -36,48 +37,48 @@ read_freqs <- function(file, header = FALSE, cols = list(0L, ""),
                        sep = "\t", comment.char = "", na.strings = "",
                        quote = "", allowEscapes = FALSE,
                        nlines = sh_count_lines(file), ...) {
+  .scan <- \(...) scan(..., sep = sep, comment.char = comment.char,
+    na.strings = na.strings, quote = quote, allowEscapes = allowEscapes,
+    quiet = TRUE)
 
   .colnames <- names(cols)
   if (!is.null(.colnames) && isTRUE(header)) {
     warning("Both `header=TRUE` and names found in `cols`: using `names(cols)`")
   }
 
-  res <- scan(file, quiet = TRUE,
-    what = cols, nlines = nlines, comment.char = comment.char, quote = quote,
-    na.strings = na.strings, sep = sep, allowEscapes = allowEscapes, ...)
-
   .colnames <- if (is.null(.colnames) && isTRUE(header)) {
-    vapply(res, \(x) as.character(x[[1]]), "")
+     .scan(file, what = "", nlines = 1)
   } else {
     c("f", "type")
   }
 
-  res <- data.frame(res)
-  colnames(res) <- .colnames
-  res
+  res <- .scan(file, what = cols, nlines = nlines, skip = header)
+
+  data.frame(res) |>
+    `colnames<-`(.colnames)
 }
 
-sh_count_lines <- function(path) {
-  cmd <- c("-l", path, " | awk '{print $1}'")
-  n <- system2("wc", cmd, stdout = TRUE, stderr = NULL) |>
-    tryCatch(warning = \(w) 0L) |>
-  as.integer(n)
+#' @rdname read_freqs
+#' @export
+write_freqs <- function(..., sep = "\t", quote = FALSE, na = "") {
+  write.table(..., sep = sep, quote = quote, na = "", row.names = FALSE)
 }
 
 #' @rdname read_freqs
 #' @export
 fread_freqs <- function(..., header = FALSE, sep = "\t", quote = "",
                         na.strings = NULL, stringsAsFactors = FALSE) {
-  data.table::fread(
-    ...,
-    header = header,
-    sep = sep,
-    quote = quote,
-    na.strings = na.strings,
-    stringsAsFactors = stringsAsFactors
-  )
+  do.call(data.table::fread, as.list(match.call()[-1]))
 }
 
+#' @rdname read_freqs
+#' @export
+fwrite_freqs <- function(..., sep = "\t", sep2 = " ", quote = FALSE) {
+  data.table::fwrite(..., sep = sep, sep2 = sep2, quote = quote)
+}
+
+#' Read and write VRT or WPL files
+#'
 #' @description Import VRT (verticalized text) or WLP (word per line) files
 #'
 #' @param .x character. path to file or connection, see `scan()`
