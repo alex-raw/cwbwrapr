@@ -18,6 +18,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Imports:
   data.table
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests:
+    spelling,
+    tinytest
 Config/testthat/edition: 3
+Language: en-US
